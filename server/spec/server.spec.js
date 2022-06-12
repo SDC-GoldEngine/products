@@ -4,7 +4,6 @@ const request = require('supertest');
 const app = require('../index');
 
 const testId = Math.floor(Math.random() * 5000) + 1;
-const notEmpty = !0;
 
 describe('Tests for all endpoints', () => {
   test('GET /products', (done) => {
