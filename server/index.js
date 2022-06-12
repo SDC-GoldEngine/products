@@ -16,3 +16,5 @@ app.use('/products', router);
 app.listen(PORT, () => console.log(
   `Listening on http://${process.env.HOST}:${PORT}`,
 ));
+
+module.exports = app;
