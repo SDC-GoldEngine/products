@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/no-extraneous-dependencies */
 const request = require('supertest');
-const app = require('../index');
+const app = require('../app');
 
-const testId = Math.floor(Math.random() * 5000) + 1;
+const testId = Math.floor(Math.random() * 1000) + 1;
 
 describe('Tests for all endpoints', () => {
   test('GET /products', (done) => {
@@ -49,7 +49,7 @@ describe('Tests for all endpoints', () => {
 });
 
 describe('Test GET /products content', () => {
-  test('It responds with an array of objects', async () => {
+  test('It should contain properties "id", "name", "slogan", "description"', async () => {
     const response = await request(app).get('/products');
     expect(response.body[0]).toHaveProperty('id');
     expect(response.body[0]).toHaveProperty('name');
