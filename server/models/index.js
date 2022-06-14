@@ -53,7 +53,15 @@ module.exports = {
         )
       ) AS results FROM styles s WHERE s.product_id = $1
       GROUP BY s.product_id`, [productId])
-      .then((res) => res.rows[0])
+      .then((res) => {
+        if (res.rows.length === 0) {
+          return {
+            product_id: productId,
+            results: [],
+          };
+        }
+        return res.rows[0];
+      })
       .catch((err) => { throw err; })
   ),
 
