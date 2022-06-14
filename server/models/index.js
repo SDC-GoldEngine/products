@@ -12,13 +12,14 @@ module.exports = {
 
   readProduct: (productId) => (
     pool.query(`SELECT p.id, p.name, p.slogan, p.description, p.category, p.default_price,
-      json_agg(
-        json_build_object(
-          'feature', f.feature,
-          'value', f.value
-        )
-      ) AS features FROM products p JOIN features f ON p.id = f.product_id
-      WHERE p.id = $1 GROUP BY p.id ORDER BY p.id ASC`, [productId])
+    json_agg(
+      json_build_object(
+        'feature', f.feature,
+        'value', f.value
+      )
+    ) AS features
+    FROM products p LEFT JOIN features f ON p.id = f.product_id
+    WHERE p.id = $1 GROUP BY p.id`, [productId])
       .then((res) => res.rows[0])
       .catch((err) => { throw err; })
   ),
@@ -63,3 +64,14 @@ module.exports = {
       .catch((err) => { throw err; })
   ),
 };
+
+// LOOK INTO INDEXING
+// INDEX ON THE COLUMNS IM JOINING
+
+// readProduct: (productId) => (
+//   pool.query(`SELECT p.id, p.name, p.slogan, p.description, p.category, p.default_price,
+//   f.feature, f.value
+//   FROM products p LEFT JOIN features f ON p.id = f.product_id WHERE p.id = ${productId};`)
+//     .then((res) => res.rows[0])
+//     .catch((err) => { throw err; })
+// ),
